@@ -12,7 +12,9 @@ import (
 func main() {
 	rootCmd := NewRootCmd()
 	versionCmd := NewVersionCmd()
+	yahooAPICmd := NewYahooAPICmd()
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(yahooAPICmd)
 	rootCmd.SetHelpCommand(helpCommand)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

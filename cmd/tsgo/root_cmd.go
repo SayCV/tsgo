@@ -6,6 +6,7 @@ import (
 
 	//"github.com/saycv/tsgo"
 	//"github.com/saycv/tsgo/pkg/configuration"
+
 	logsupport "github.com/saycv/tsgo/pkg/log"
 
 	log "github.com/sirupsen/logrus"
@@ -40,6 +41,7 @@ func NewRootCmd() *cobra.Command {
 
 			//for _, sourcePath := range args {
 			//}
+
 			return nil
 		},
 	}
