@@ -6,9 +6,9 @@ import (
 
 	//"github.com/saycv/tsgo"
 	//"github.com/saycv/tsgo/pkg/configuration"
-	//logsupport "github.com/saycv/tsgo/pkg/log"
+	logsupport "github.com/saycv/tsgo/pkg/log"
 
-	//log "github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 

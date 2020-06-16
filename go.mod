@@ -1,4 +1,4 @@
-module tsgo
+module github.com/saycv/tsgo
 
 go 1.14
 
