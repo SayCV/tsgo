@@ -1,10 +1,13 @@
 package stocks
 
 import (
+	"io/ioutil"
 	"testing"
 
 	"github.com/ShawnRong/tushare-go"
-	//"github.com/stretchr/testify/require"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -24,4 +27,29 @@ func TestQuotes(t *testing.T) {
 	data, _ := c.StockBasic(params, fields)
 
 	t.Log(data)
+}
+
+func TestQQQuotes(t *testing.T) {
+	market := NewMarket()
+	profile := NewProfile()
+
+	profile.Tickers = []string{"GOOG", "BA"}
+
+	quotes := NewQuotes(market, profile)
+	require.NotNil(t, quotes)
+
+	data, err := ioutil.ReadFile("./yahoo_quotes_sample.json")
+	require.Nil(t, err)
+	require.NotNil(t, data)
+
+	require.True(t, quotes.isReady())
+	//quotes.Fetch(data)
+	_, err = quotes.parse2(data)
+	assert.NoError(t, err)
+
+	require.Equal(t, 2, len(quotes.stocks))
+	assert.Equal(t, "BA", quotes.stocks[0].Ticker)
+	assert.Equal(t, "331.76", quotes.stocks[0].LastTrade)
+	assert.Equal(t, "GOOG", quotes.stocks[1].Ticker)
+	assert.Equal(t, "1214.38", quotes.stocks[1].LastTrade)
 }
