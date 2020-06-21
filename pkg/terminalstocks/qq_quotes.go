@@ -3,11 +3,14 @@ package TerminalStocks
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/axgle/mahonia"
+	"github.com/axgle/pinyin"
 	util "github.com/saycv/tsgo/pkg/utils"
 )
 
@@ -246,7 +249,13 @@ func (quotes *Quotes) FetchQQ() (self *Quotes) {
 		for i, raw := range results {
 			realTime := raw
 
-			quotes.stocks[i].Ticker = realTime.Name
+			pyStr := pinyin.Convert(realTime.Name)
+			reg, err := regexp.Compile("[a-z]+")
+			if err != nil {
+				log.Fatal(err)
+			}
+			pyCapStr := reg.ReplaceAllString(pyStr, "")
+			quotes.stocks[i].Ticker = pyCapStr
 			quotes.stocks[i].LastTrade = strconv.FormatFloat(realTime.NowPri, 'f', -1, 64)
 			quotes.stocks[i].Change = strconv.FormatFloat(realTime.Change, 'f', -1, 64)
 			quotes.stocks[i].ChangePct = strconv.FormatFloat(realTime.ChangePer, 'f', -1, 64)

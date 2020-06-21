@@ -8,6 +8,8 @@ github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRF
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=
 github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394 h1:OYA+5W64v3OgClL+IrOD63t4i/RW7RqrAVl9LTZ9UqQ=
 github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394/go.mod h1:Q8n74mJTIgjX4RBBcHnJ05h//6/k6foqmgE45jTQtxg=
+github.com/axgle/pinyin v0.0.0-20180208003132-d1557e083be4 h1:zM1k5j43iSsliDj/Q7L53igEZ8Y1aVp10xkXUeoiU0c=
+github.com/axgle/pinyin v0.0.0-20180208003132-d1557e083be4/go.mod h1:TEwpL+V6bbY/lgknmK+n4a9Wktbz+hjlL02r2aMe0ps=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/brandleesee/TerminalStocks v0.0.0-20190915090544-52a313fdcf39 h1:C7q+L7I02at4gXqA5n2x9B0qHs7lP2ZB+33MDxS4UN8=
