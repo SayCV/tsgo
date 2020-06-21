@@ -3,12 +3,12 @@ package market
 import (
 	"testing"
 
-	"github.com/brandleesee/TerminalStocks"
+	TerminalStocks "github.com/saycv/tsgo/pkg/terminalstocks"
 	"github.com/stretchr/testify/require"
 )
 
 func TestQuotes(t *testing.T) {
-	market := TerminalStocks.NewMarket()
+	market := TerminalStocks.NewMarket(TerminalStocks.API_VENDOR_YAHOO)
 	profile := TerminalStocks.NewProfile()
 
 	profile.Tickers = []string{"GOOG", "BA"}

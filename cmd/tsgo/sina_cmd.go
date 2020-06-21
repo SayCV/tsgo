@@ -14,14 +14,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// NewQQAPICmd returns the root command
-func NewQQAPICmd() *cobra.Command {
+// NewSinaAPICmd returns the root command
+func NewSinaAPICmd() *cobra.Command {
 
 	var logLevel string
 
 	rootCmd := &cobra.Command{
-		Use:   "qq",
-		Short: `Fetch finance from QQ API`,
+		Use:   "sina",
+		Short: `Fetch finance from Sina API`,
 		Args:  cobra.ArbitraryArgs,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			lvl, err := log.ParseLevel(logLevel)
@@ -42,7 +42,7 @@ func NewQQAPICmd() *cobra.Command {
 
 			//for _, sourcePath := range args {
 			//}
-			screen := TerminalStocks.NewScreen(TerminalStocks.API_VENDOR_QQ)
+			screen := TerminalStocks.NewScreen(TerminalStocks.API_VENDOR_SINA)
 			defer screen.Close()
 
 			profile := TerminalStocks.NewProfile()

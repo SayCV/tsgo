@@ -20,6 +20,7 @@ type Screen struct {
 	layout   *Layout    // Pointer to layout (gets created by screen).
 	markup   *Markup    // Pointer to markup processor (gets created by screen).
 	pausedAt *time.Time // Timestamp of the pause request or nil if none.
+	vendor   APISourceType
 }
 
 // Initializes Termbox, creates screen along with layout and markup, and
@@ -32,8 +33,15 @@ func NewScreen(vendor APISourceType) *Screen {
 	screen := &Screen{}
 	screen.layout = NewLayout(vendor)
 	screen.markup = NewMarkup()
+	screen.vendor = vendor
 
 	return screen.Resize()
+}
+
+// Resize gets called when the screen is being resized. It recalculates screen
+// dimensions and requests to clear the screen on next update.
+func (screen *Screen) Vendor() APISourceType {
+	return screen.vendor
 }
 
 // Close gets called upon program termination to close the Termbox.

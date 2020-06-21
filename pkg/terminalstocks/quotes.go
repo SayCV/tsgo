@@ -54,11 +54,10 @@ type Quotes struct {
 }
 
 // Sets the initial values and returns new Quotes struct.
-func NewQuotes(market *Market, profile *Profile, vendor APISourceType) *Quotes {
+func NewQuotes(market *Market, profile *Profile) *Quotes {
 	return &Quotes{
 		market:  market,
 		profile: profile,
-		vendor:  vendor,
 		errors:  ``,
 	}
 }
@@ -67,11 +66,13 @@ func NewQuotes(market *Market, profile *Profile, vendor APISourceType) *Quotes {
 // []Stock structs.
 func (quotes *Quotes) Fetch() (self *Quotes) {
 	self = quotes // <-- This ensures we return correct quotes after recover() from panic().
-	switch quotes.vendor {
+	switch quotes.market.vendor {
 	case API_VENDOR_YAHOO:
 		quotes.FetchYahoo()
 	case API_VENDOR_QQ:
 		quotes.FetchQQ()
+	case API_VENDOR_SINA:
+		quotes.FetchSina()
 	default:
 		quotes.errors = fmt.Sprintf("\n\n\n\nError Not Support : %v", quotes.vendor)
 	}

@@ -5,9 +5,9 @@
 package TerminalStocks
 
 import (
-	`sort`
-	`strconv`
-	`strings`
+	"sort"
+	"strconv"
+	"strings"
 )
 
 // Sorter gets called to sort stock quotes by one of the columns. The

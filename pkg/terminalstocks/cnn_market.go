@@ -100,6 +100,12 @@ func (market *Market) Fetch() (self *Market) {
 		mkt1.Szzs = mkt2.Szzs
 		mkt1.Szcz = mkt2.Szcz
 		return mkt1
+	case API_VENDOR_SINA:
+		mkt1 := market.FetchYahoo()
+		mkt2 := market.FetchQQ()
+		mkt1.Szzs = mkt2.Szzs
+		mkt1.Szcz = mkt2.Szcz
+		return mkt1
 	default:
 		return market.FetchYahoo()
 	}

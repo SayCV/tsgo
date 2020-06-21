@@ -13,12 +13,12 @@ import (
 )
 
 func TestQuotes(t *testing.T) {
-	market := NewMarket()
+	market := NewMarket(API_VENDOR_YAHOO)
 	profile := NewProfile()
 
 	profile.Tickers = []string{"GOOG", "BA"}
 
-	quotes := NewQuotes(market, profile, API_VENDOR_YAHOO)
+	quotes := NewQuotes(market, profile)
 	require.NotNil(t, quotes)
 
 	data, err := ioutil.ReadFile("./yahoo_quotes_sample.json")

@@ -46,7 +46,7 @@ func NewYahooAPICmd() *cobra.Command {
 			defer screen.Close()
 
 			profile := TerminalStocks.NewProfile()
-			mainLoopYahoo(screen, profile)
+			mainLoop(screen, profile)
 			return nil
 		},
 	}
@@ -79,7 +79,7 @@ Enter comma-delimited list of stock tickers when prompted.
 `
 
 //-----------------------------------------------------------------------------
-func mainLoopYahoo(screen *TerminalStocks.Screen, profile *TerminalStocks.Profile) {
+func mainLoop(screen *TerminalStocks.Screen, profile *TerminalStocks.Profile) {
 	var lineEditor *TerminalStocks.LineEditor
 	var columnEditor *TerminalStocks.ColumnEditor
 
@@ -96,8 +96,8 @@ func mainLoopYahoo(screen *TerminalStocks.Screen, profile *TerminalStocks.Profil
 		}
 	}()
 
-	market := TerminalStocks.NewMarket(TerminalStocks.API_VENDOR_YAHOO)
-	quotes := TerminalStocks.NewQuotes(market, profile, TerminalStocks.API_VENDOR_YAHOO)
+	market := TerminalStocks.NewMarket(screen.Vendor())
+	quotes := TerminalStocks.NewQuotes(market, profile)
 	screen.Draw(market, quotes)
 
 loop:

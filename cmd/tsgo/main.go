@@ -14,9 +14,11 @@ func main() {
 	versionCmd := NewVersionCmd()
 	yahooAPICmd := NewYahooAPICmd()
 	qqAPICmd := NewQQAPICmd()
+	sinaAPICmd := NewSinaAPICmd()
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(yahooAPICmd)
 	rootCmd.AddCommand(qqAPICmd)
+	rootCmd.AddCommand(sinaAPICmd)
 	rootCmd.SetHelpCommand(helpCommand)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
