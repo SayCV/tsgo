@@ -19,7 +19,7 @@ const (
 	URL_SINA_FUND_FLOW = "http://qt.gtimg.cn/q=ff_%s"
 	URL_SINA_PK        = "http://qt.gtimg.cn/q=s_pk%s"
 	URL_SINA_INFO      = "http://qt.gtimg.cn/q=s_%s"
-	URL_SINA_DAILY     = "http://image.sinajs.cn/newchart/%s/n/"
+	URL_SINA_DAILY     = "http://image.sinajs.cn/newchart/%d/%s/n/"
 	URL_SINA_WEEKLY    = "http://image.sinajs.cn/newchart/%s/n/"
 )
 

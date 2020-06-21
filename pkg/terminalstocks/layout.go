@@ -66,6 +66,9 @@ func NewLayout(vendor APISourceType) *Layout {
 	case API_VENDOR_SINA:
 		layout.marketTemplate = buildQQMarketTemplate()
 		layout.quotesTemplate = buildQQQuotesTemplate()
+	case API_VENDOR_NETEASE:
+		layout.marketTemplate = buildQQMarketTemplate()
+		layout.quotesTemplate = buildQQQuotesTemplate()
 	default:
 		layout.marketTemplate = buildMarketTemplate()
 		layout.quotesTemplate = buildQuotesTemplate()
@@ -91,6 +94,10 @@ func (layout *Layout) Market(market *Market) string {
 			market.Szzs, market.Szcz,
 			market.Oil, market.Gold)
 	case API_VENDOR_SINA:
+		highlight(market.Dow, market.Nasdaq,
+			market.Szzs, market.Szcz,
+			market.Oil, market.Gold)
+	case API_VENDOR_NETEASE:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
 			market.Oil, market.Gold)
