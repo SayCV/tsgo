@@ -1,10 +1,13 @@
-package stocks
+package TerminalStocks
 
 import (
+	"fmt"
 	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/ShawnRong/tushare-go"
+	util "github.com/saycv/tsgo/pkg/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -14,7 +17,7 @@ const (
 	TUSHARE_TOKEN = "4c010225d485a8db581030b9c04f634d14d3b2bd92fa2e3546a77bbe"
 )
 
-func TestQuotes(t *testing.T) {
+func TestQQQuotesCase0(t *testing.T) {
 
 	c := tushare.New(TUSHARE_TOKEN)
 	// 参数
@@ -29,13 +32,30 @@ func TestQuotes(t *testing.T) {
 	t.Log(data)
 }
 
-func TestQQQuotes(t *testing.T) {
+func TestQQQuotesCase1(t *testing.T) {
+	code := []string{"600519", "300519"}
+	code = util.StockWithPrefix(code)
+	fmt.Println(code)
+	realTime := GetRealtime(strings.Join(code, ","))
+	//pk := GetPK(code)
+	//funFlow := GetFundFlow(code)
+	//info := GetInfo(code)
+	fmt.Println(util.JsonEncodeS(realTime))
+	//fmt.Println(util.JsonEncodeS(pk))
+	//fmt.Println(util.JsonEncodeS(funFlow))
+	//fmt.Println(util.JsonEncodeS(info))
+	//	list := GetDaily(code, 15)
+	//list := GetWeekly(code)
+	//fmt.Println(util.JsonEncodeS(list))
+}
+
+func TestQQQuotesCase2(t *testing.T) {
 	market := NewMarket()
 	profile := NewProfile()
 
 	profile.Tickers = []string{"GOOG", "BA"}
 
-	quotes := NewQuotes(market, profile)
+	quotes := NewQuotes(market, profile, API_VENDOR_QQ)
 	require.NotNil(t, quotes)
 
 	data, err := ioutil.ReadFile("./yahoo_quotes_sample.json")

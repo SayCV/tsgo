@@ -6,9 +6,9 @@ import (
 
 	//"github.com/saycv/tsgo"
 	//"github.com/saycv/tsgo/pkg/configuration"
-	"github.com/brandleesee/TerminalStocks"
 	"github.com/nsf/termbox-go"
 	logsupport "github.com/saycv/tsgo/pkg/log"
+	TerminalStocks "github.com/saycv/tsgo/pkg/terminalstocks"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -21,7 +21,7 @@ func NewYahooAPICmd() *cobra.Command {
 
 	rootCmd := &cobra.Command{
 		Use:   "yahoo",
-		Short: `yahoo fetch from Yahoo API`,
+		Short: `Fetch finance from Yahoo API`,
 		Args:  cobra.ArbitraryArgs,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			lvl, err := log.ParseLevel(logLevel)
@@ -97,7 +97,7 @@ func mainLoopYahoo(screen *TerminalStocks.Screen, profile *TerminalStocks.Profil
 	}()
 
 	market := TerminalStocks.NewMarket()
-	quotes := TerminalStocks.NewQuotes(market, profile)
+	quotes := TerminalStocks.NewQuotes(market, profile, TerminalStocks.API_VENDOR_YAHOO)
 	screen.Draw(market, quotes)
 
 loop:
