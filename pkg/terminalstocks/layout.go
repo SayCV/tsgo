@@ -31,10 +31,11 @@ type Layout struct {
 	regex          *regexp.Regexp     // Pointer to regular expression to align decimal points.
 	marketTemplate *template.Template // Pointer to template to format market data.
 	quotesTemplate *template.Template // Pointer to template to format the list of stock quotes.
+	vendor         APISourceType
 }
 
 // Creates the layout and assigns the default values that stay unchanged.
-func NewLayout() *Layout {
+func NewLayout(vendor APISourceType) *Layout {
 	layout := &Layout{}
 	layout.columns = []Column{
 		{-7, `Ticker`, `Ticker`, nil},
@@ -53,9 +54,19 @@ func NewLayout() *Layout {
 		{9, `Yield`, `Yield`, percent},
 		{11, `MarketCap`, `MktCap`, currency},
 	}
+	layout.vendor = vendor
 	layout.regex = regexp.MustCompile(`(\.\d+)[BMK]?$`)
-	layout.marketTemplate = buildMarketTemplate()
-	layout.quotesTemplate = buildQuotesTemplate()
+	switch layout.vendor {
+	case API_VENDOR_YAHOO:
+		layout.marketTemplate = buildMarketTemplate()
+		layout.quotesTemplate = buildQuotesTemplate()
+	case API_VENDOR_QQ:
+		layout.marketTemplate = buildQQMarketTemplate()
+		layout.quotesTemplate = buildQQQuotesTemplate()
+	default:
+		layout.marketTemplate = buildMarketTemplate()
+		layout.quotesTemplate = buildQuotesTemplate()
+	}
 
 	return layout
 }
@@ -67,9 +78,21 @@ func (layout *Layout) Market(market *Market) string {
 		return err // then simply return the error string.
 	}
 
-	highlight(market.Dow, market.Sp500, market.Nasdaq,
-		market.Tokyo, market.HongKong, market.London, market.Frankfurt,
-		market.Yield, market.Oil, market.Euro, market.Gold)
+	switch layout.vendor {
+	case API_VENDOR_YAHOO:
+		highlight(market.Dow, market.Sp500, market.Nasdaq,
+			market.Tokyo, market.HongKong, market.London, market.Frankfurt,
+			market.Yield, market.Oil, market.Euro, market.Gold)
+	case API_VENDOR_QQ:
+		highlight(market.Dow, market.Nasdaq,
+			market.Szzs, market.Szcz,
+			market.Oil, market.Gold)
+	default:
+		highlight(market.Dow, market.Sp500, market.Nasdaq,
+			market.Tokyo, market.HongKong, market.London, market.Frankfurt,
+			market.Yield, market.Oil, market.Euro, market.Gold)
+	}
+
 	buffer := new(bytes.Buffer)
 	layout.marketTemplate.Execute(buffer, market)
 

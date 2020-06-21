@@ -5,12 +5,12 @@
 package TerminalStocks
 
 import (
-	`bytes`
-	`fmt`
-	`io/ioutil`
-	`net/http`
-	`regexp`
-	`strings`
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"regexp"
+	"strings"
 )
 
 const marketURL = `https://money.cnn.com/data/markets/`
@@ -18,6 +18,7 @@ const marketURL = `https://money.cnn.com/data/markets/`
 // Market stores current market information displayed in the top three lines of
 // the screen. The market data is fetched and parsed from the HTML page above.
 type Market struct {
+	vendor    APISourceType
 	IsClosed  bool              // True when U.S. markets are closed.
 	Dow       map[string]string // Hash of Dow Jones indicators.
 	Nasdaq    map[string]string // Hash of NASDAQ indicators.
@@ -31,13 +32,16 @@ type Market struct {
 	Yen       map[string]string
 	Euro      map[string]string
 	Gold      map[string]string
+	Szzs      map[string]string
+	Szcz      map[string]string
 	regex     *regexp.Regexp // Regex to parse market data from HTML.
 	errors    string         // Error(s), if any.
 }
 
 // Returns new initialized Market struct.
-func NewMarket() *Market {
+func NewMarket(vendor APISourceType) *Market {
 	market := &Market{}
+	market.vendor = vendor
 	market.IsClosed = false
 	market.Dow = make(map[string]string)
 	market.Nasdaq = make(map[string]string)
@@ -53,6 +57,9 @@ func NewMarket() *Market {
 	market.Yen = make(map[string]string)
 	market.Euro = make(map[string]string)
 	market.Gold = make(map[string]string)
+
+	market.Szzs = make(map[string]string)
+	market.Szcz = make(map[string]string)
 
 	market.errors = ``
 
@@ -84,6 +91,23 @@ func NewMarket() *Market {
 // Fetch downloads HTML page from the 'marketURL', parses it, and stores resulting data
 // in internal hashes. If download or data parsing fails Fetch populates 'market.errors'.
 func (market *Market) Fetch() (self *Market) {
+	switch market.vendor {
+	case API_VENDOR_YAHOO:
+		return market.FetchYahoo()
+	case API_VENDOR_QQ:
+		mkt1 := market.FetchYahoo()
+		mkt2 := market.FetchQQ()
+		mkt1.Szzs = mkt2.Szzs
+		mkt1.Szcz = mkt2.Szcz
+		return mkt1
+	default:
+		return market.FetchYahoo()
+	}
+}
+
+// Fetch downloads HTML page from the 'marketURL', parses it, and stores resulting data
+// in internal hashes. If download or data parsing fails Fetch populates 'market.errors'.
+func (market *Market) FetchYahoo() (self *Market) {
 	self = market // <-- This ensures we return correct market after recover() from panic().
 	defer func() {
 		if err := recover(); err != nil {
@@ -148,7 +172,6 @@ func (market *Market) extract(snippet []byte) *Market {
 	market.Sp500[`latest`] = matches[8]
 	market.Sp500[`percent`] = matches[9]
 
-
 	market.Yield[`name`] = `10-year Yield`
 	market.Yield[`latest`] = matches[10]
 	market.Yield[`change`] = matches[11]
@@ -183,4 +206,3 @@ func (market *Market) extract(snippet []byte) *Market {
 
 	return market
 }
-

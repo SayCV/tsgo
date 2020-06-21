@@ -255,7 +255,11 @@ func (quotes *Quotes) FetchQQ() (self *Quotes) {
 				log.Fatal(err)
 			}
 			pyCapStr := reg.ReplaceAllString(pyStr, "")
-			quotes.stocks[i].Ticker = pyCapStr
+			if false {
+				quotes.stocks[i].Ticker = realTime.Name
+			} else {
+				quotes.stocks[i].Ticker = pyCapStr
+			}
 			quotes.stocks[i].LastTrade = strconv.FormatFloat(realTime.NowPri, 'f', -1, 64)
 			quotes.stocks[i].Change = strconv.FormatFloat(realTime.Change, 'f', -1, 64)
 			quotes.stocks[i].ChangePct = strconv.FormatFloat(realTime.ChangePer, 'f', -1, 64)

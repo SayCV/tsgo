@@ -9,19 +9,20 @@ import (
 	"github.com/nsf/termbox-go"
 	logsupport "github.com/saycv/tsgo/pkg/log"
 	TerminalStocks "github.com/saycv/tsgo/pkg/terminalstocks"
+	util "github.com/saycv/tsgo/pkg/utils"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-// NewYahooAPICmd returns the root command
-func NewYahooAPICmd() *cobra.Command {
+// NewQQAPICmd returns the root command
+func NewQQAPICmd() *cobra.Command {
 
 	var logLevel string
 
 	rootCmd := &cobra.Command{
-		Use:   "yahoo",
-		Short: `Fetch finance from Yahoo API`,
+		Use:   "qq",
+		Short: `Fetch finance from QQ API`,
 		Args:  cobra.ArbitraryArgs,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			lvl, err := log.ParseLevel(logLevel)
@@ -42,11 +43,14 @@ func NewYahooAPICmd() *cobra.Command {
 
 			//for _, sourcePath := range args {
 			//}
-			screen := TerminalStocks.NewScreen(TerminalStocks.API_VENDOR_YAHOO)
+			screen := TerminalStocks.NewScreen(TerminalStocks.API_VENDOR_QQ)
 			defer screen.Close()
 
 			profile := TerminalStocks.NewProfile()
-			mainLoopYahoo(screen, profile)
+			code := []string{"600519", "300017", "603121"}
+			profile.Tickers = util.StockWithPrefix(code)
+
+			mainLoopQQ(screen, profile)
 			return nil
 		},
 	}
@@ -60,26 +64,8 @@ func NewYahooAPICmd() *cobra.Command {
 	return rootCmd
 }
 
-const helpYahoo = `Mop v0.2.0 -- Copyright (c) 2013-2016 by Michael Dvorkin. All Rights Reserved.
-NO WARRANTIES OF ANY KIND WHATSOEVER. SEE THE LICENSE FILE FOR DETAILS.
-
-<u>Command</u>    <u>Description                                </u>
-   +       Add stocks to the list.
-   -       Remove stocks from the list.
-   ?       Display this help screen.
-   g       Group stocks by advancing/declining issues.
-   o       Change column sort order.
-   p       Pause market data and stock updates.
-   q       Quit Terminal Stocks.
-  esc      Quit Terminal Stocks.
-
-Enter comma-delimited list of stock tickers when prompted.
-
-<r> Press any key to continue </r>
-`
-
 //-----------------------------------------------------------------------------
-func mainLoopYahoo(screen *TerminalStocks.Screen, profile *TerminalStocks.Profile) {
+func mainLoopQQ(screen *TerminalStocks.Screen, profile *TerminalStocks.Profile) {
 	var lineEditor *TerminalStocks.LineEditor
 	var columnEditor *TerminalStocks.ColumnEditor
 
@@ -96,8 +82,8 @@ func mainLoopYahoo(screen *TerminalStocks.Screen, profile *TerminalStocks.Profil
 		}
 	}()
 
-	market := TerminalStocks.NewMarket(TerminalStocks.API_VENDOR_YAHOO)
-	quotes := TerminalStocks.NewQuotes(market, profile, TerminalStocks.API_VENDOR_YAHOO)
+	market := TerminalStocks.NewMarket(TerminalStocks.API_VENDOR_QQ)
+	quotes := TerminalStocks.NewQuotes(market, profile, TerminalStocks.API_VENDOR_QQ)
 	screen.Draw(market, quotes)
 
 loop:
