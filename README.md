@@ -35,4 +35,4 @@ following keyboard commands:
     f       Set a filtering expression.
     F       Unset a filtering expression.
     ?       Display help screen.
-    esc     Quit mop.
+    esc     Quit tsgo.
