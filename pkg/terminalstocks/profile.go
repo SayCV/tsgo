@@ -32,7 +32,7 @@ type Profile struct {
 // If the file is not there it gets created with default values.
 func NewProfile() *Profile {
 	profile := &Profile{}
-	fmt.Println(profile.defaultFileName())
+	//fmt.Println(profile.defaultFileName())
 	data, err := ioutil.ReadFile(profile.defaultFileName())
 	if err != nil { // Set default values:
 		profile.MarketRefresh = 12 // Market data gets fetched every 12s (5 times per minute).
