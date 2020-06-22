@@ -6,7 +6,7 @@ package TerminalStocks
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"io/ioutil"
 	"os/user"
 	"sort"
