@@ -44,7 +44,7 @@ func NewSinaAPICmd() *cobra.Command {
 			screen := TerminalStocks.NewScreen(TerminalStocks.API_VENDOR_SINA)
 			defer screen.Close()
 
-			profile := TerminalStocks.NewProfile()
+			profile := TerminalStocks.NewProfile(TerminalStocks.API_VENDOR_SINA)
 
 			mainLoop(screen, profile)
 			return nil

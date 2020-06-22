@@ -44,8 +44,8 @@ func NewQQAPICmd() *cobra.Command {
 			screen := TerminalStocks.NewScreen(TerminalStocks.API_VENDOR_QQ)
 			defer screen.Close()
 
-			profile := TerminalStocks.NewProfile()
-			// code := []string{"600519", "601318", "601066", "002958", "000878", "600121", "603121"}
+			profile := TerminalStocks.NewProfile(TerminalStocks.API_VENDOR_QQ)
+			// code := []string{"600519", "601318", "601066", "002958", "000878"}
 			// profile.Tickers = util.StockWithPrefix(code)
 			// profile.SortColumn = 3
 			// profile.Ascending = false

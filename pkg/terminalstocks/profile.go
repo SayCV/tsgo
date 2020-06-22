@@ -30,7 +30,7 @@ type Profile struct {
 
 // Creates the profile and attempts to load the settings from ~/.TSrc file.
 // If the file is not there it gets created with default values.
-func NewProfile() *Profile {
+func NewProfile(vendor APISourceType) *Profile {
 	profile := &Profile{}
 	//fmt.Println(profile.defaultFileName())
 	data, err := ioutil.ReadFile(profile.defaultFileName())
@@ -38,9 +38,13 @@ func NewProfile() *Profile {
 		profile.MarketRefresh = 12 // Market data gets fetched every 12s (5 times per minute).
 		profile.QuotesRefresh = 5  // Stock quotes get updated every 5s (12 times per minute).
 		profile.Grouped = false    // Stock quotes are *not* grouped by advancing/declining.
-		profile.Tickers = []string{`AAPL`, `C`, `GOOG`, `IBM`, `KO`, `ORCL`, `V`}
-		profile.SortColumn = 0   // Stock quotes are sorted by ticker name.
-		profile.Ascending = true // A to Z.
+		if vendor == API_VENDOR_YAHOO {
+			profile.Tickers = []string{`AAPL`, `C`, `GOOG`, `IBM`, `KO`, `ORCL`, `V`}
+		} else {
+			profile.Tickers = []string{"600519", "601318", "601066", "002958", "000878"}
+		}
+		profile.SortColumn = 3    // Stock quotes are sorted by ticker name.
+		profile.Ascending = false // H to L.
 		profile.Save()
 	} else {
 		json.Unmarshal(data, profile)
