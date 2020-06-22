@@ -49,6 +49,7 @@ func NewQQAPICmd() *cobra.Command {
 			code := []string{"600519", "601318", "601066", "002958", "000878", "600121", "603121"}
 			profile.Tickers = util.StockWithPrefix(code)
 			profile.SortColumn = 3
+			profile.Ascending = false
 
 			mainLoop(screen, profile)
 			return nil
