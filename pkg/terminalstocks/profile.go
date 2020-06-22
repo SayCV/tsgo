@@ -5,10 +5,11 @@
 package TerminalStocks
 
 import (
-	`encoding/json`
-	`io/ioutil`
-	`os/user`
-	`sort`
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os/user"
+	"sort"
 )
 
 // File name in user's home directory where we store the settings.
@@ -31,6 +32,7 @@ type Profile struct {
 // If the file is not there it gets created with default values.
 func NewProfile() *Profile {
 	profile := &Profile{}
+	fmt.Println(profile.defaultFileName())
 	data, err := ioutil.ReadFile(profile.defaultFileName())
 	if err != nil { // Set default values:
 		profile.MarketRefresh = 12 // Market data gets fetched every 12s (5 times per minute).
