@@ -244,6 +244,7 @@ func buildQuotesTemplate() *template.Template {
 //-----------------------------------------------------------------------------
 func highlight(collections ...map[string]string) {
 	for _, collection := range collections {
+		//fmt.Println("[", collection[`change`], "]")
 		if collection[`change`][0:1] != `-` {
 			collection[`change`] = `<white>` + collection[`change`] + `</>`
 		} else {

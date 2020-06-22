@@ -260,12 +260,12 @@ func (quotes *Quotes) parseNetease(body []byte) (*Quotes, error) {
 	}
 	results := d
 	//fmt.Println(len(results))
-	//log.Info(results)
+	//fmt.Println(results)
 
 	i := 0
 	quotes.stocks = make([]Stock, len(results))
 	for _, raw := range results {
-		//log.Info(j, raw)
+		//fmt.Println(raw)
 		result := map[string]string{}
 		for k, v := range raw.(map[string]interface{}) {
 			switch v.(type) {
