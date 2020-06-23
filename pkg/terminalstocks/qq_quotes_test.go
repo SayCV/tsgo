@@ -51,7 +51,7 @@ func TestQQQuotesCase1(t *testing.T) {
 
 func TestQQQuotesCase2(t *testing.T) {
 	market := NewMarket(API_VENDOR_QQ)
-	profile := NewProfile()
+	profile := NewProfile(API_VENDOR_QQ)
 
 	profile.Tickers = []string{"GOOG", "BA"}
 

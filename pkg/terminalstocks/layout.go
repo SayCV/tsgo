@@ -38,7 +38,7 @@ type Layout struct {
 func NewLayout(vendor APISourceType) *Layout {
 	layout := &Layout{}
 	layout.columns = []Column{
-		{-8, `Ticker`, `Ticker`, nil},
+		{-12, `Ticker`, `Ticker`, nil},
 		{10, `LastTrade`, `Last`, currency},
 		{10, `Change`, `Change`, currency},
 		{10, `ChangePct`, `Change%`, last},

@@ -1,7 +1,7 @@
 package TerminalStocks
 
 import (
-	//"fmt"
+	"fmt"
 	//"io/ioutil"
 	//"strings"
 	"testing"
@@ -14,7 +14,7 @@ import (
 
 func TestNeteaseQuotesCase0(t *testing.T) {
 	market := NewMarket(API_VENDOR_NETEASE)
-	profile := NewProfile()
+	profile := NewProfile(API_VENDOR_NETEASE)
 
 	code := []string{"600519", "601318", "601066", "002958", "000878", "600121", "603121"}
 	profile.Tickers = util.StockWithPrefixNetease(code)
@@ -24,5 +24,15 @@ func TestNeteaseQuotesCase0(t *testing.T) {
 
 	results := quotes.FetchNetease()
 	t.Log(results)
+
+}
+
+func TestNeteaseQuotesCase2(t *testing.T) {
+	token := "中国"
+	for i, char := range token {
+		t.Log(i)
+		t.Log(char)
+		t.Log(fmt.Sprintf("%c", char))
+	}
 
 }

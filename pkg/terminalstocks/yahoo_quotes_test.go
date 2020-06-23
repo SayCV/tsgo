@@ -14,7 +14,7 @@ import (
 
 func TestQuotes(t *testing.T) {
 	market := NewMarket(API_VENDOR_YAHOO)
-	profile := NewProfile()
+	profile := NewProfile(API_VENDOR_YAHOO)
 
 	profile.Tickers = []string{"GOOG", "BA"}
 
