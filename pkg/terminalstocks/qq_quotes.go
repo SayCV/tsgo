@@ -242,8 +242,8 @@ func (quotes *Quotes) FetchQQ() (self *Quotes) {
 		//	}
 		//}()
 
-		code := util.StockWithPrefix(quotes.profile.Tickers)
-		results := GetRealtime(strings.Join(code, ","))
+		codes := util.StockWithPrefix(quotes.profile.Tickers)
+		results := GetRealtime(strings.Join(codes, ","))
 
 		quotes.stocks = make([]Stock, len(results))
 		for i, raw := range results {
@@ -281,6 +281,36 @@ func (quotes *Quotes) FetchQQ() (self *Quotes) {
 
 			adv := realTime.Change
 			quotes.stocks[i].Advancing = adv >= 0.0
+		}
+
+		for i, code := range codes {
+			weekly := GetWeekly(code)
+			low52, high52 := func(list []*HistoryData) (min float64, max float64) {
+				listnbr := len(list)
+				startIndex := 0
+				if len(weekly) > 52 {
+					startIndex = listnbr - 52
+				} else {
+					startIndex = 0
+				}
+				min = list[startIndex].Min
+				max = list[startIndex].Max
+
+				for _, entity := range list[startIndex:] {
+					valueMin := entity.Min
+					valueMax := entity.Max
+					if valueMin < min {
+						min = valueMin
+					}
+					if valueMax > max {
+						max = valueMax
+					}
+				}
+				return min, max
+			}(weekly)
+
+			quotes.stocks[i].Low52 = strconv.FormatFloat(low52, 'f', -1, 64)
+			quotes.stocks[i].High52 = strconv.FormatFloat(high52, 'f', -1, 64)
 		}
 	}
 
