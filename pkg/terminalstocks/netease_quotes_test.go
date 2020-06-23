@@ -2,6 +2,8 @@ package TerminalStocks
 
 import (
 	"fmt"
+	"strings"
+
 	//"io/ioutil"
 	//"strings"
 	"testing"
@@ -29,6 +31,7 @@ func TestNeteaseQuotesCase0(t *testing.T) {
 
 func TestNeteaseQuotesCase2(t *testing.T) {
 	token := "中国"
+	t.Log(strings.Join(strings.Split(token, ""), " "))
 	for i, char := range token {
 		t.Log(i)
 		t.Log(char)

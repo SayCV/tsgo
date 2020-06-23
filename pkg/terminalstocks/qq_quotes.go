@@ -256,15 +256,7 @@ func (quotes *Quotes) FetchQQ() (self *Quotes) {
 			}
 			pyCapStr := reg.ReplaceAllString(pyStr, "")
 			if true {
-				if false {
-					quotes.stocks[i].Ticker = realTime.Name
-				} else {
-					tmp := ""
-					for _, char := range realTime.Name {
-						tmp = tmp + string(char) + string(char)
-					}
-					quotes.stocks[i].Ticker = tmp
-				}
+				quotes.stocks[i].Ticker = strings.Join(strings.Split(realTime.Name, ""), " ")
 			} else {
 				quotes.stocks[i].Ticker = pyCapStr
 			}
