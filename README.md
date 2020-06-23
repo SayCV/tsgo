@@ -1,5 +1,5 @@
 # tsgo
-tsgo based on [mop](https://github.com/mop-tracker/mop)
+tsgo based on [mop](https://github.com/mop-tracker/mop), It support chinese stock market.
 
 ## Installing
 
