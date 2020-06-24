@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/axgle/mahonia"
 	"github.com/axgle/pinyin"
@@ -256,7 +257,20 @@ func (quotes *Quotes) FetchQQ() (self *Quotes) {
 			}
 			pyCapStr := reg.ReplaceAllString(pyStr, "")
 			if true {
-				quotes.stocks[i].Ticker = strings.Join(strings.Split(realTime.Name, ""), " ")
+				if true {
+					//quotes.stocks[i].Ticker = strings.Join(strings.Split(realTime.Name, ""), " ")
+					newstring := ""
+					for _, char := range realTime.Name {
+						if unicode.Is(unicode.Scripts["Han"], char) {
+							newstring = newstring + string(char) + " "
+						} else {
+							newstring = newstring + string(char)
+						}
+					}
+					quotes.stocks[i].Ticker = newstring
+				} else {
+					quotes.stocks[i].Ticker = realTime.Name
+				}
 			} else {
 				quotes.stocks[i].Ticker = pyCapStr
 			}
