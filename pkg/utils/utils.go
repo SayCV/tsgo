@@ -68,6 +68,34 @@ func StockWithPrefixNetease(code []string) []string {
 	return results
 }
 
+func StockWithPrefixEastmoney(code []string) []string {
+	var results []string
+	for _, one := range code {
+		new := ""
+		switch {
+		case strings.HasPrefix(one, "000"):
+			new = fmt.Sprintf("0.%s", one)
+		case strings.HasPrefix(one, "002"):
+			new = fmt.Sprintf("0.%s", one)
+		case strings.HasPrefix(one, "300"):
+			new = fmt.Sprintf("0.%s", one)
+		case strings.HasPrefix(one, "600"):
+			new = fmt.Sprintf("1.%s", one)
+		case strings.HasPrefix(one, "601"):
+			new = fmt.Sprintf("1.%s", one)
+		case strings.HasPrefix(one, "603"):
+			new = fmt.Sprintf("1.%s", one)
+		case strings.HasPrefix(one, "688"):
+			new = fmt.Sprintf("1.%s", one)
+		default:
+			new = one
+		}
+		//fmt.Println(new)
+		results = append(results, new)
+	}
+	return results
+}
+
 func JsonDecodeS(jstr string, obj interface{}) {
 	json.Unmarshal([]byte(jstr), obj)
 }

@@ -19,6 +19,7 @@ const (
 	API_VENDOR_QQ
 	API_VENDOR_SINA
 	API_VENDOR_NETEASE
+	API_VENDOR_EASTMONEY
 )
 
 // Stock stores quote information for the particular stock ticker. The data
@@ -76,6 +77,8 @@ func (quotes *Quotes) Fetch() (self *Quotes) {
 		quotes.FetchSina()
 	case API_VENDOR_NETEASE:
 		quotes.FetchNetease()
+	case API_VENDOR_EASTMONEY:
+		quotes.FetchEastmoney()
 	default:
 		quotes.errors = fmt.Sprintf("\n\n\n\nError Not Support : %v", quotes.vendor)
 	}

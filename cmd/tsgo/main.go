@@ -16,11 +16,13 @@ func main() {
 	qqAPICmd := NewQQAPICmd()
 	sinaAPICmd := NewSinaAPICmd()
 	neteaseAPICmd := NewNeteaseAPICmd()
+	eastmoneyAPICmd := NewEastmoneyAPICmd()
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(yahooAPICmd)
 	rootCmd.AddCommand(qqAPICmd)
 	rootCmd.AddCommand(sinaAPICmd)
 	rootCmd.AddCommand(neteaseAPICmd)
+	rootCmd.AddCommand(eastmoneyAPICmd)
 	rootCmd.SetHelpCommand(helpCommand)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
