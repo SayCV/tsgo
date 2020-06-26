@@ -166,7 +166,7 @@ func GetInfoEastmoney(code string) *StockInfo {
 func GetDailyEastmoney(code string) []*HistoryData {
 	now := time.Now()
 	year, month, day := now.Date()
-	yearstart := fmt.Sprintf("%d", 0)
+	yearstart := fmt.Sprintf("%04d%02d%02d", year-2, month, day)
 	yearend := fmt.Sprintf("%04d%02d%02d", year+1, month, day)
 	url := fmt.Sprintf(URL_EASTMONEY_DAILY, code, yearstart, yearend)
 	//fmt.Println(url)
