@@ -1,10 +1,11 @@
 package TerminalStocks
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
 	"net/http"
+
 	//"regexp"
 	"strconv"
 	"strings"
@@ -224,8 +225,8 @@ func (quotes *Quotes) FetchNetease() (self *Quotes) {
 			}
 		}()
 
-		code := util.StockWithPrefix(quotes.profile.Tickers)
-		url := fmt.Sprintf(URL_NETEASE_REAL_TIME, strings.Join(code, ","))
+		codes := util.StockWithPrefix(quotes.profile.Tickers)
+		url := fmt.Sprintf(URL_NETEASE_REAL_TIME, strings.Join(codes, ","))
 		response, err := http.Get(url)
 		if err != nil {
 			panic(err)
@@ -278,7 +279,7 @@ func (quotes *Quotes) parseNetease(body []byte) (*Quotes, error) {
 			}
 
 		}
-		
+
 		yestclose, _ := strconv.ParseFloat(result["yestclose"], 64)
 		now, _ := strconv.ParseFloat(result["price"], 64)
 

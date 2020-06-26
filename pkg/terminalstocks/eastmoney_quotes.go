@@ -167,8 +167,10 @@ func GetDailyEastmoney(code string) []*HistoryData {
 	now := time.Now()
 	year, month, day := now.Date()
 	yearstart := fmt.Sprintf("%d", 0)
-	yearend := fmt.Sprintf("%d%d%d", year, month, day+1)
-	resp, err := http.DefaultClient.Get(fmt.Sprintf(URL_EASTMONEY_DAILY, code, yearstart, yearend))
+	yearend := fmt.Sprintf("%04d%02d%02d", year+1, month, day)
+	url := fmt.Sprintf(URL_EASTMONEY_DAILY, code, yearstart, yearend)
+	//fmt.Println(url)
+	resp, err := http.DefaultClient.Get(url)
 	checkErr(err)
 	if resp == nil || resp.StatusCode != http.StatusOK {
 		return nil
@@ -183,14 +185,14 @@ func GetDailyEastmoney(code string) []*HistoryData {
 	if err != nil {
 		return list
 	}
-	results := d["data"].(map[string]interface{})["klines"].([]string)
+	results := d["data"].(map[string]interface{})["klines"].([]interface{})
 	dataArray := results
 
 	for index, str := range dataArray {
-		if index == 0 || index == len(results)-1 {
+		if index == -1 || index == -len(results)-1 {
 
 		} else {
-			data := strings.Split(str, ",")
+			data := strings.Split(str.(string), ",")
 			entity := new(HistoryData)
 			entity.Date = strings.Replace(data[0], "\n", "", -1)
 			entity.Open, _ = strconv.ParseFloat(data[1], 64)
@@ -200,7 +202,9 @@ func GetDailyEastmoney(code string) []*HistoryData {
 			entity.Trade, _ = strconv.ParseFloat(data[5], 64)
 			list = append(list, entity)
 		}
+		//fmt.Println("index = ", index, ", str = ", str)
 	}
+
 	return list
 }
 
@@ -366,36 +370,6 @@ func (quotes *Quotes) parseEastmoney(body []byte, codes []string) (*Quotes, erro
 		if err == nil {
 			quotes.stocks[i].Advancing = adv >= 0.0
 		}
-
-		for i, code := range codes {
-			weekly := GetWeekly(code)
-			low52, high52 := func(list []*HistoryData) (min float64, max float64) {
-				listnbr := len(list)
-				startIndex := 0
-				if len(weekly) > 52 {
-					startIndex = listnbr - 52
-				} else {
-					startIndex = 0
-				}
-				min = list[startIndex].Min
-				max = list[startIndex].Max
-
-				for _, entity := range list[startIndex:] {
-					valueMin := entity.Min
-					valueMax := entity.Max
-					if valueMin < min {
-						min = valueMin
-					}
-					if valueMax > max {
-						max = valueMax
-					}
-				}
-				return min, max
-			}(weekly)
-
-			quotes.stocks[i].Low52 = strconv.FormatFloat(low52, 'f', -1, 64)
-			quotes.stocks[i].High52 = strconv.FormatFloat(high52, 'f', -1, 64)
-		}
 		i++
 	}
 
@@ -404,8 +378,10 @@ func (quotes *Quotes) parseEastmoney(body []byte, codes []string) (*Quotes, erro
 		low52, high52 := func(list []*HistoryData) (min float64, max float64) {
 			listnbr := len(list)
 			startIndex := 0
-			if len(weekly) > 52 {
-				startIndex = listnbr - 52
+			if len(weekly) > 52*5 {
+				startIndex = listnbr - 52*5
+			} else if len(weekly) < 1 {
+				return 0, 0
 			} else {
 				startIndex = 0
 			}

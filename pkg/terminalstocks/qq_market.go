@@ -21,10 +21,10 @@ func (market *Market) FetchQQ() (self *Market) {
 	//	}
 	//}()
 
-	code := []string{"sh000001", "sz399001"}
-	code = util.StockWithPrefix(code)
+	codes := []string{"sh000001", "sz399001"}
+	codes = util.StockWithPrefix(codes)
 	//fmt.Println(code)
-	results := GetRealtime(strings.Join(code, ","))
+	results := GetRealtime(strings.Join(codes, ","))
 	//fmt.Println(results)
 
 	realTime := results[0]

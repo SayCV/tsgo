@@ -224,8 +224,8 @@ func (quotes *Quotes) FetchSina() (self *Quotes) {
 		//	}
 		//}()
 
-		code := util.StockWithPrefix(quotes.profile.Tickers)
-		results := GetRealtimeSina(strings.Join(code, ","))
+		codes := util.StockWithPrefix(quotes.profile.Tickers)
+		results := GetRealtimeSina(strings.Join(codes, ","))
 
 		quotes.stocks = make([]Stock, len(results))
 		for i, raw := range results {
