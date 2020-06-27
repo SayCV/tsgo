@@ -14,6 +14,9 @@ cd tsgo && make install
 
 ```BATCH
 
+@echo off
+MODE con cols=156 lines=56
+
 tsgo version
 echo Use yahoo API
 tsgo yahoo
