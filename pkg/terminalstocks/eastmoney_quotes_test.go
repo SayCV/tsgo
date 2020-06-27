@@ -24,7 +24,7 @@ func TestEastmoneyQuotesCase0(t *testing.T) {
 	quotes := NewQuotes(market, profile)
 	require.NotNil(t, quotes)
 
-	results := quotes.FetchEastmoney()
+	results := quotes.FetchLimitupEastmoney()
 	t.Log(results)
 
 }

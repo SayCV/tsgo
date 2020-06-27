@@ -419,6 +419,9 @@ func (quotes *Quotes) FetchLimitupEastmoney() (self *Quotes) {
 		}()
 
 		results, _ := GetLimitupEastmoney()
+		//profile := NewProfile(API_VENDOR_LIMITUP_EASTMONEY)
+		//sorter := NewSorter(profile)
+		//sorter.SortByCurrentColumn(results)
 		maxlen := len(results)
 		if maxlen > 50 {
 			maxlen = 50
