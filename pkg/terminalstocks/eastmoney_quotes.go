@@ -420,8 +420,8 @@ func (quotes *Quotes) FetchLimitupEastmoney() (self *Quotes) {
 
 		results, _ := GetLimitupEastmoney()
 		maxlen := len(results)
-		if maxlen > 20 {
-			maxlen = 20
+		if maxlen > 50 {
+			maxlen = 50
 		}
 		quotes.stocks = make([]Stock, maxlen)
 		for i, raw := range results {
