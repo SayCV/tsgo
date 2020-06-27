@@ -26,7 +26,8 @@ const (
 // Stock stores quote information for the particular stock ticker. The data
 // for all the fields except 'Advancing' is fetched using Yahoo market API.
 type Stock struct {
-	Ticker     string `json:"symbol"`                      // Stock ticker.
+	Ticker     string `json:"symbol"` // Stock ticker.
+	Gid        string `json:"gid"`
 	LastTrade  string `json:"regularMarketPrice"`          // l1: last trade.
 	Change     string `json:"regularMarketChange"`         // c6: change real time.
 	ChangePct  string `json:"regularMarketChangePercent"`  // k2: percent change real time.

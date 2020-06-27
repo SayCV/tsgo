@@ -12,6 +12,7 @@ import (
 	"unicode"
 
 	"github.com/axgle/pinyin"
+	util "github.com/saycv/tsgo/pkg/utils"
 )
 
 const (
@@ -81,6 +82,7 @@ func GetLimitupEastmoney() ([]Stock, error) {
 		} else {
 			stocks[i].Ticker = pyCapStr
 		}
+		stocks[i].Gid = result["f12"]
 
 		yestclose, _ := strconv.ParseFloat(result["f18"], 64)
 		now, _ := strconv.ParseFloat(result["f2"], 64)
@@ -117,6 +119,39 @@ func GetLimitupEastmoney() ([]Stock, error) {
 			stocks[i].Advancing = adv >= 0.0
 		}
 		i++
+	}
+
+	for i, stock := range stocks {
+		code := util.StockWithPrefixEastmoney([]string{stock.Gid})
+		weekly := GetDailyEastmoney(code[0])
+		low52, high52 := func(list []*HistoryData) (min float64, max float64) {
+			listnbr := len(list)
+			startIndex := 0
+			if len(weekly) > 52*5 {
+				startIndex = listnbr - 52*5
+			} else if len(weekly) < 1 {
+				return 0, 0
+			} else {
+				startIndex = 0
+			}
+			min = list[startIndex].Min
+			max = list[startIndex].Max
+
+			for _, entity := range list[startIndex:] {
+				valueMin := entity.Min
+				valueMax := entity.Max
+				if valueMin < min {
+					min = valueMin
+				}
+				if valueMax > max {
+					max = valueMax
+				}
+			}
+			return min, max
+		}(weekly)
+
+		stocks[i].Low52 = strconv.FormatFloat(low52, 'f', -1, 64)
+		stocks[i].High52 = strconv.FormatFloat(high52, 'f', -1, 64)
 	}
 
 	return stocks, nil

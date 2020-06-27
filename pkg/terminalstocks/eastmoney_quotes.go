@@ -186,7 +186,17 @@ func GetDailyEastmoney(code string) []*HistoryData {
 	if err != nil {
 		return list
 	}
-	results := d["data"].(map[string]interface{})["klines"].([]interface{})
+	resultsData, ok := d["data"].(map[string]interface{})
+	if !ok {
+		//fmt.Println(url)
+		return list
+	}
+	results, ok := resultsData["klines"].([]interface{})
+	if !ok {
+		//fmt.Println(url)
+		return list
+	}
+	//results := d["data"].(map[string]interface{})["klines"].([]interface{})
 	dataArray := results
 
 	for index, str := range dataArray {
@@ -412,11 +422,11 @@ func (quotes *Quotes) parseEastmoney(body []byte, codes []string) (*Quotes, erro
 func (quotes *Quotes) FetchLimitupEastmoney() (self *Quotes) {
 	self = quotes // <-- This ensures we return correct quotes after recover() from panic().
 	if quotes.isReady() {
-		defer func() {
-			if err := recover(); err != nil {
-				quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
-			}
-		}()
+		//defer func() {
+		//	if err := recover(); err != nil {
+		//		quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
+		//	}
+		//}()
 
 		results, _ := GetLimitupEastmoney()
 		//profile := NewProfile(API_VENDOR_LIMITUP_EASTMONEY)

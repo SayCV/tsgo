@@ -31,6 +31,8 @@ func StockWithPrefix(code []string) []string {
 			new = fmt.Sprintf("sh%s", one)
 		case strings.HasPrefix(one, "603"):
 			new = fmt.Sprintf("sh%s", one)
+		case strings.HasPrefix(one, "605"):
+			new = fmt.Sprintf("sh%s", one)
 		case strings.HasPrefix(one, "688"):
 			new = fmt.Sprintf("sh%s", one)
 		default:
@@ -59,6 +61,8 @@ func StockWithPrefixNetease(code []string) []string {
 			new = fmt.Sprintf("0%s", one)
 		case strings.HasPrefix(one, "603"):
 			new = fmt.Sprintf("0%s", one)
+		case strings.HasPrefix(one, "605"):
+			new = fmt.Sprintf("0%s", one)
 		case strings.HasPrefix(one, "688"):
 			new = fmt.Sprintf("0%s", one)
 		default:
@@ -86,6 +90,8 @@ func StockWithPrefixEastmoney(code []string) []string {
 		case strings.HasPrefix(one, "601"):
 			new = fmt.Sprintf("1.%s", one)
 		case strings.HasPrefix(one, "603"):
+			new = fmt.Sprintf("1.%s", one)
+		case strings.HasPrefix(one, "605"):
 			new = fmt.Sprintf("1.%s", one)
 		case strings.HasPrefix(one, "688"):
 			new = fmt.Sprintf("1.%s", one)
