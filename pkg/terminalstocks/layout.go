@@ -72,6 +72,9 @@ func NewLayout(vendor APISourceType) *Layout {
 	case API_VENDOR_EASTMONEY:
 		layout.marketTemplate = buildQQMarketTemplate()
 		layout.quotesTemplate = buildQQQuotesTemplate()
+	case API_VENDOR_LIMITUP_EASTMONEY:
+		layout.marketTemplate = buildQQMarketTemplate()
+		layout.quotesTemplate = buildQQQuotesTemplate()
 	default:
 		layout.marketTemplate = buildMarketTemplate()
 		layout.quotesTemplate = buildQuotesTemplate()

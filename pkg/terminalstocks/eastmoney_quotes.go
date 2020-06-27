@@ -19,6 +19,7 @@ import (
 	"github.com/axgle/pinyin"
 
 	//"github.com/axgle/pinyin"
+
 	util "github.com/saycv/tsgo/pkg/utils"
 )
 
@@ -406,4 +407,30 @@ func (quotes *Quotes) parseEastmoney(body []byte, codes []string) (*Quotes, erro
 	}
 
 	return quotes, nil
+}
+
+func (quotes *Quotes) FetchLimitupEastmoney() (self *Quotes) {
+	self = quotes // <-- This ensures we return correct quotes after recover() from panic().
+	if quotes.isReady() {
+		defer func() {
+			if err := recover(); err != nil {
+				quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
+			}
+		}()
+
+		results, _ := GetLimitupEastmoney()
+		maxlen := len(results)
+		if maxlen > 20 {
+			maxlen = 20
+		}
+		quotes.stocks = make([]Stock, maxlen)
+		for i, raw := range results {
+			if i >= maxlen {
+				break
+			}
+			quotes.stocks[i] = raw
+		}
+	}
+
+	return quotes
 }
