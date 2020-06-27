@@ -1,8 +1,8 @@
 package TerminalStocks
 
 import (
-	"fmt"
-	"strings"
+	//"fmt"
+	//"strings"
 
 	//"io/ioutil"
 	//"strings"
@@ -26,16 +26,5 @@ func TestEastmoneyQuotesCase0(t *testing.T) {
 
 	results := quotes.FetchEastmoney()
 	t.Log(results)
-
-}
-
-func TestEastmoneyQuotesCase2(t *testing.T) {
-	token := "中国"
-	t.Log(strings.Join(strings.Split(token, ""), " "))
-	for i, char := range token {
-		t.Log(i)
-		t.Log(char)
-		t.Log(fmt.Sprintf("%c", char))
-	}
 
 }

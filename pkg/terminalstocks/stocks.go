@@ -96,3 +96,21 @@ type HistoryData struct {
 	Min   float64
 	Trade float64
 }
+
+type LhbData struct {
+	SCode      string
+	SName      string
+	Price      float64
+	ChangePer  float64
+	ChangeRate float64
+	LhbInMoney float64
+	TradeAmont float64
+	// Ntransac
+	LhbCauses string
+	// Oldid
+	LhbSellMoney  float64
+	LhbBuyMoney   float64
+	LhbTradeAmont float64
+	// Tdate
+	LhbNotes string
+}
