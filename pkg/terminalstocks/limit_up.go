@@ -20,7 +20,7 @@ const (
 )
 
 func GetLimitupEastmoney() ([]Stock, error) {
-	queryNbr := 200
+	queryNbr := 50
 	url := fmt.Sprintf(URL_EASTMONEY_LIMITUP, queryNbr)
 	//fmt.Println(url)
 	resp, err := http.DefaultClient.Get(url)
