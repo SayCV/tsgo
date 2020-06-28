@@ -13,7 +13,7 @@ import (
 )
 
 // File name in user's home directory where we store the settings.
-const TSrc = `/.TSrc`
+const TSrc = `/TSrc.json`
 
 // Profile manages Terminal Stocks program settings as defined by user (ex. list of
 // stock tickers). The settings are serialized using JSON and saved in
