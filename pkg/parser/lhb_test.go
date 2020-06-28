@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	TerminalStocks "github.com/saycv/tsgo/pkg/terminalstocks"
+	//TerminalStocks "github.com/saycv/tsgo/pkg/terminalstocks"
 	util "github.com/saycv/tsgo/pkg/utils"
 )
 
@@ -19,9 +19,4 @@ func TestEastmoneyQuotesCase2(t *testing.T) {
 	lhblist := GetLhbEastmoney(util.GetLatestTradeDay(yearstart))
 	t.Log(lhblist)
 
-}
-
-func TestEastmoneyQuotesCase3(t *testing.T) {
-	stocklist, _ := TerminalStocks.GetLimitupEastmoney()
-	t.Log(stocklist)
 }

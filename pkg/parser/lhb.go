@@ -67,6 +67,17 @@ func GetLhbEastmoney(date string) []TerminalStocks.LhbData {
 			entity.SCode = data["SCode"]
 			entity.SName = data["SName"]
 			entity.Price, _ = strconv.ParseFloat(data["ClosePrice"], 64)
+			entity.ChangePer, _ = strconv.ParseFloat(data["Chgradio"], 64)
+			entity.ChangeRate, _ = strconv.ParseFloat(data["Dchratio"], 64)
+			entity.LhbInMoney, _ = strconv.ParseFloat(data["JmMoney"], 64)
+			entity.TradeAmont, _ = strconv.ParseFloat(data["Turnover"], 64)
+			//entity.LhbInMoney, _ = strconv.ParseFloat(data["JmMoney"], 64)
+			entity.LhbCauses = data["Ctypedes"]
+			entity.LhbSellMoney, _ = strconv.ParseFloat(data["Smoney"], 64)
+			entity.LhbBuyMoney, _ = strconv.ParseFloat(data["Bmoney"], 64)
+			entity.LhbTradeAmont, _ = strconv.ParseFloat(data["ZeMoney"], 64)
+			entity.LhbNotes = data["JD"]
+
 			list = append(list, *entity)
 		}
 		//fmt.Println("index = ", index, ", str = ", str)

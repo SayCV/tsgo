@@ -37,22 +37,42 @@ type Layout struct {
 // Creates the layout and assigns the default values that stay unchanged.
 func NewLayout(vendor APISourceType) *Layout {
 	layout := &Layout{}
-	layout.columns = []Column{
-		{-8, `Ticker`, `Ticker`, nil},
-		{10, `LastTrade`, `Last`, currency},
-		{10, `Change`, `Change`, currency},
-		{10, `ChangePct`, `Change%`, last},
-		{10, `Open`, `Open`, currency},
-		{10, `Low`, `Low`, currency},
-		{10, `High`, `High`, currency},
-		{10, `Low52`, `52w Low`, currency},
-		{10, `High52`, `52w High`, currency},
-		{11, `Volume`, `Volume`, nil},
-		{11, `AvgVolume`, `AvgVolume`, nil},
-		{9, `PeRatio`, `P/E`, blank},
-		{9, `Dividend`, `Dividend`, zero},
-		{9, `Yield`, `Yield`, percent},
-		{11, `MarketCap`, `MktCap`, currency},
+	if vendor == API_VENDOR_LHB_EASTMONEY {
+		layout.columns = []Column{
+			{-8, `Ticker`, `Ticker`, nil},
+			{10, `LastTrade`, `Last`, currency},
+			{10, `Change`, `Change`, currency},
+			{10, `ChangePct`, `Change%`, last},
+			{10, `Open`, `Open`, currency},
+			{10, `Low`, `Low`, currency},
+			{10, `High`, `High`, currency},
+			{10, `Low52`, `52w Low`, currency},
+			{10, `High52`, `52w High`, currency},
+			{11, `Volume`, `Volume`, nil},
+			{11, `AvgVolume`, `AvgVolume`, nil},
+			{9, `PeRatio`, `P/E`, blank},
+			{9, `Dividend`, `Dividend`, zero},
+			{9, `Causes`, `Causes`, percent},
+			{11, `Notes`, `Notes`, currency},
+		}
+	} else {
+		layout.columns = []Column{
+			{-8, `Ticker`, `Ticker`, nil},
+			{10, `LastTrade`, `Last`, currency},
+			{10, `Change`, `Change`, currency},
+			{10, `ChangePct`, `Change%`, last},
+			{10, `Open`, `Open`, currency},
+			{10, `Low`, `Low`, currency},
+			{10, `High`, `High`, currency},
+			{10, `Low52`, `52w Low`, currency},
+			{10, `High52`, `52w High`, currency},
+			{11, `Volume`, `Volume`, nil},
+			{11, `AvgVolume`, `AvgVolume`, nil},
+			{9, `PeRatio`, `P/E`, blank},
+			{9, `Dividend`, `Dividend`, zero},
+			{9, `Yield`, `Yield`, percent},
+			{11, `MarketCap`, `MktCap`, currency},
+		}
 	}
 	layout.vendor = vendor
 	layout.regex = regexp.MustCompile(`(\.\d+)[BMK]?$`)
@@ -75,6 +95,9 @@ func NewLayout(vendor APISourceType) *Layout {
 	case API_VENDOR_LIMITUP_EASTMONEY:
 		layout.marketTemplate = buildQQMarketTemplate()
 		layout.quotesTemplate = buildQQQuotesTemplate()
+	case API_VENDOR_LHB_EASTMONEY:
+		layout.marketTemplate = buildQQMarketTemplate()
+		layout.quotesTemplate = buildLhbQuotesTemplate()
 	default:
 		layout.marketTemplate = buildMarketTemplate()
 		layout.quotesTemplate = buildQuotesTemplate()

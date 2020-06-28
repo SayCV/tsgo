@@ -21,6 +21,7 @@ const (
 	API_VENDOR_NETEASE
 	API_VENDOR_EASTMONEY
 	API_VENDOR_LIMITUP_EASTMONEY
+	API_VENDOR_LHB_EASTMONEY
 )
 
 // Stock stores quote information for the particular stock ticker. The data

@@ -29,3 +29,16 @@ func buildQQQuotesTemplate() *template.Template {
 
 	return template.Must(template.New(`quotes`).Parse(markup))
 }
+
+//-----------------------------------------------------------------------------
+func buildLhbQuotesTemplate() *template.Template {
+	markup := `<right><white>{{.Now}}</></right>
+
+
+
+{{.Header}}
+{{range.Stocks}}{{if .Advancing}}<cyan>{{else}}<green>{{end}}{{.Ticker}}{{.LastTrade}}{{.Change}}{{.ChangePct}}{{.Open}}{{.Low}}{{.High}}{{.Low52}}{{.High52}}{{.Volume}}{{.AvgVolume}}{{.PeRatio}}{{.Dividend}}{{.Yield}}{{.MarketCap}}</>
+{{end}}`
+
+	return template.Must(template.New(`quotes`).Parse(markup))
+}

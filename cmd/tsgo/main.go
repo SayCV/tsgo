@@ -18,6 +18,7 @@ func main() {
 	neteaseAPICmd := NewNeteaseAPICmd()
 	eastmoneyAPICmd := NewEastmoneyAPICmd()
 	eastmoneyLimitupAPICmd := NewEastmoneyLimitupAPICmd()
+	eastmoneyLhbAPICmd := NewEastmoneyLhbAPICmd()
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(yahooAPICmd)
 	rootCmd.AddCommand(qqAPICmd)
@@ -25,6 +26,7 @@ func main() {
 	rootCmd.AddCommand(neteaseAPICmd)
 	rootCmd.AddCommand(eastmoneyAPICmd)
 	rootCmd.AddCommand(eastmoneyLimitupAPICmd)
+	rootCmd.AddCommand(eastmoneyLhbAPICmd)
 	rootCmd.SetHelpCommand(helpCommand)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
