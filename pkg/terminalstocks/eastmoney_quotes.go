@@ -253,11 +253,11 @@ func GetWeeklyEastmoney(code string) []*HistoryData {
 func (quotes *Quotes) FetchEastmoney() (self *Quotes) {
 	self = quotes // <-- This ensures we return correct quotes after recover() from panic().
 	if quotes.isReady() {
-		defer func() {
-			if err := recover(); err != nil {
-				quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
-			}
-		}()
+		//defer func() {
+		//	if err := recover(); err != nil {
+		//		quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
+		//	}
+		//}()
 
 		codes := util.StockWithPrefixEastmoney(quotes.profile.Tickers)
 		url := fmt.Sprintf(URL_EASTMONEY_REAL_TIME, strings.Join(codes, ","))
@@ -385,6 +385,9 @@ func (quotes *Quotes) parseEastmoney(body []byte, codes []string) (*Quotes, erro
 	}
 
 	for i, code := range codes {
+		if i >= len(results) {
+			break
+		}
 		weekly := GetDailyEastmoney(code)
 		low52, high52 := func(list []*HistoryData) (min float64, max float64) {
 			listnbr := len(list)
