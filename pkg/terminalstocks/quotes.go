@@ -84,6 +84,8 @@ func (quotes *Quotes) Fetch() (self *Quotes) {
 		quotes.FetchEastmoney()
 	case API_VENDOR_LIMITUP_EASTMONEY:
 		quotes.FetchLimitupEastmoney()
+	case API_VENDOR_LHB_EASTMONEY:
+		quotes.FetchLhbEastmoney()
 	default:
 		quotes.errors = fmt.Sprintf("\n\n\n\nError Not Support : %v", quotes.vendor)
 	}

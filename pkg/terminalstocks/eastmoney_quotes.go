@@ -425,11 +425,11 @@ func (quotes *Quotes) parseEastmoney(body []byte, codes []string) (*Quotes, erro
 func (quotes *Quotes) FetchLimitupEastmoney() (self *Quotes) {
 	self = quotes // <-- This ensures we return correct quotes after recover() from panic().
 	if quotes.isReady() {
-		//defer func() {
-		//	if err := recover(); err != nil {
-		//		quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
-		//	}
-		//}()
+		defer func() {
+			if err := recover(); err != nil {
+				quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
+			}
+		}()
 
 		results, _ := GetLimitupEastmoney()
 		//profile := NewProfile(API_VENDOR_LIMITUP_EASTMONEY)
@@ -445,6 +445,98 @@ func (quotes *Quotes) FetchLimitupEastmoney() (self *Quotes) {
 				break
 			}
 			quotes.stocks[i] = raw
+		}
+	}
+
+	return quotes
+}
+
+func (quotes *Quotes) FetchLhbEastmoney() (self *Quotes) {
+	self = quotes // <-- This ensures we return correct quotes after recover() from panic().
+	if quotes.isReady() {
+		defer func() {
+			if err := recover(); err != nil {
+				quotes.errors = fmt.Sprintf("\n\n\n\nError fetching stock quotes...\n%s", err)
+			}
+		}()
+		now := time.Now()
+		year, month, day := now.Date()
+		date := fmt.Sprintf("%04d%02d%02d", year, month, day)
+		results := GetLhbEastmoney(date)
+		//profile := NewProfile(API_VENDOR_LIMITUP_EASTMONEY)
+		//sorter := NewSorter(profile)
+		//sorter.SortByCurrentColumn(results)
+		maxlen := len(results)
+		if maxlen > 50 {
+			maxlen = 50
+		}
+		quotes.stocks = make([]Stock, maxlen)
+		for i, result := range results {
+			if i >= maxlen {
+				break
+			}
+
+			newstring := ""
+			for _, char := range result.SName {
+				if unicode.Is(unicode.Scripts["Han"], char) {
+					newstring = newstring + string(char) + " "
+				} else {
+					newstring = newstring + string(char)
+				}
+			}
+			quotes.stocks[i].Ticker = newstring
+
+			quotes.stocks[i].Gid = result.SCode
+			quotes.stocks[i].LastTrade = fmt.Sprintf("%.2f", result.Price)
+			quotes.stocks[i].Change = fmt.Sprintf("%.2f", 0.0)
+			quotes.stocks[i].ChangePct = fmt.Sprintf("%.2f", result.ChangePer)
+			quotes.stocks[i].Open = ""
+			quotes.stocks[i].Low = ""
+			quotes.stocks[i].High = ""
+			quotes.stocks[i].Low52 = ""
+			quotes.stocks[i].High52 = ""
+			quotes.stocks[i].Volume = fmt.Sprintf("%d", int(result.TradeAmont))
+			quotes.stocks[i].AvgVolume = ""
+			quotes.stocks[i].PeRatio = ""
+			// TODO calculate rt
+			quotes.stocks[i].PeRatioX = ""
+			quotes.stocks[i].Dividend = ""
+
+			newstring = ""
+			for _, char := range result.LhbCauses {
+				if unicode.Is(unicode.Scripts["Han"], char) {
+					newstring = newstring + string(char) + " "
+				} else {
+					newstring = newstring + string(char)
+				}
+			}
+			quotes.stocks[i].Yield = strings.Replace(newstring, "，", "， ", -1)
+
+			newstring = ""
+			for _, char := range result.LhbNotes {
+				if unicode.Is(unicode.Scripts["Han"], char) {
+					newstring = newstring + string(char) + " "
+				} else {
+					newstring = newstring + string(char)
+				}
+			}
+			quotes.stocks[i].MarketCap = strings.Replace(newstring, "，", "， ", -1)
+
+			// TODO calculate rt?
+			quotes.stocks[i].MarketCapX = ""
+
+			/*
+				fmt.Println(i)
+				fmt.Println("-------------------")
+				for k, v := range result {
+					fmt.Println(k, v)
+				}
+				fmt.Println("-------------------")
+			*/
+			adv, err := strconv.ParseFloat(quotes.stocks[i].ChangePct, 64)
+			if err == nil {
+				quotes.stocks[i].Advancing = adv >= 0.0
+			}
 		}
 	}
 

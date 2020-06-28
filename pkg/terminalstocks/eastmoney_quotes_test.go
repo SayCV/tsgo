@@ -43,3 +43,18 @@ func TestEastmoneyQuotesCase1(t *testing.T) {
 	t.Log(results)
 
 }
+
+func TestEastmoneyQuotesCase3(t *testing.T) {
+	market := NewMarket(API_VENDOR_LHB_EASTMONEY)
+	profile := NewProfile(API_VENDOR_LHB_EASTMONEY)
+
+	code := []string{"600519", "601318", "601066", "002958", "000878", "600121", "603121"}
+	profile.Tickers = util.StockWithPrefixEastmoney(code)
+
+	quotes := NewQuotes(market, profile)
+	require.NotNil(t, quotes)
+
+	results := quotes.FetchLhbEastmoney()
+	t.Log(results)
+
+}

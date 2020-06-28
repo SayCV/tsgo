@@ -49,11 +49,11 @@ func NewLayout(vendor APISourceType) *Layout {
 			{10, `Low52`, `52w Low`, currency},
 			{10, `High52`, `52w High`, currency},
 			{11, `Volume`, `Volume`, nil},
-			{11, `AvgVolume`, `AvgVolume`, nil},
-			{9, `PeRatio`, `P/E`, blank},
-			{9, `Dividend`, `Dividend`, zero},
-			{9, `Causes`, `Causes`, percent},
-			{11, `Notes`, `Notes`, currency},
+			//{11, `AvgVolume`, `AvgVolume`, nil},
+			{9, `Gid`, `ID`, nil},
+			//{9, `Dividend`, `Dividend`, zero},
+			{80, `Yield`, `Causes`, nil},
+			{38, `MarketCap`, `Notes`, nil},
 		}
 	} else {
 		layout.columns = []Column{
@@ -127,6 +127,18 @@ func (layout *Layout) Market(market *Market) string {
 			market.Szzs, market.Szcz,
 			market.Oil, market.Gold)
 	case API_VENDOR_NETEASE:
+		highlight(market.Dow, market.Nasdaq,
+			market.Szzs, market.Szcz,
+			market.Oil, market.Gold)
+	case API_VENDOR_EASTMONEY:
+		highlight(market.Dow, market.Nasdaq,
+			market.Szzs, market.Szcz,
+			market.Oil, market.Gold)
+	case API_VENDOR_LIMITUP_EASTMONEY:
+		highlight(market.Dow, market.Nasdaq,
+			market.Szzs, market.Szcz,
+			market.Oil, market.Gold)
+	case API_VENDOR_LHB_EASTMONEY:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
 			market.Oil, market.Gold)
