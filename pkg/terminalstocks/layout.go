@@ -55,6 +55,24 @@ func NewLayout(vendor APISourceType) *Layout {
 			{80, `Yield`, `Causes`, nil},
 			{38, `MarketCap`, `Notes`, nil},
 		}
+	} else if vendor == API_VENDOR_LIMITUP_EASTMONEY {
+		layout.columns = []Column{
+			{-8, `Ticker`, `Ticker`, nil},
+			{10, `LastTrade`, `Last`, currency},
+			{10, `Change`, `Change`, currency},
+			{10, `ChangePct`, `Change%`, last},
+			{10, `Open`, `Open`, currency},
+			{10, `Low`, `Low`, currency},
+			{10, `High`, `High`, currency},
+			{10, `Low52`, `52w Low`, currency},
+			{10, `High52`, `52w High`, currency},
+			{11, `Volume`, `Volume`, nil},
+			{11, `AvgVolume`, `AvgVolume`, nil},
+			{9, `PeRatio`, `P/E`, blank},
+			{9, `Dividend`, `Dividend`, zero},
+			{9, `Yield`, `Yield`, percent},
+			{11, `MarketCap`, `MktCap`, nil},
+		}
 	} else {
 		layout.columns = []Column{
 			{-8, `Ticker`, `Ticker`, nil},

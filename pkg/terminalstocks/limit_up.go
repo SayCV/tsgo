@@ -102,7 +102,7 @@ func GetLimitupEastmoney() ([]Stock, error) {
 		stocks[i].PeRatioX = result["f9"]
 		stocks[i].Dividend = ""
 		stocks[i].Yield = ""
-		stocks[i].MarketCap = ""
+		stocks[i].MarketCap = fmt.Sprintf("%d", i + 1)
 		// TODO calculate rt?
 		stocks[i].MarketCapX = ""
 
