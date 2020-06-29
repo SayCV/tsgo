@@ -108,7 +108,7 @@ func (list byChangeDesc) Less(i, j int) bool {
 	return c(list.sortable[j].ChangePct) < c(list.sortable[i].ChangePct)
 }
 func (list byChangePctDesc) Less(i, j int) bool {
-	return c(list.sortable[j].ChangePct) < c(list.sortable[i].ChangePct)
+	return c(list.sortable[j].ChangePct) < c(list.sortable[i].ChangePct) || (c(list.sortable[j].ChangePct) == c(list.sortable[i].ChangePct) && list.sortable[j].LastTrade < list.sortable[i].LastTrade)
 }
 func (list byOpenDesc) Less(i, j int) bool {
 	return list.sortable[j].Open < list.sortable[i].Open
