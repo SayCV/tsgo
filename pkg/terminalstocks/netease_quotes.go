@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
+	"unicode"
 
 	//"regexp"
 	"strconv"
@@ -21,7 +23,7 @@ const (
 	URL_NETEASE_FUND_FLOW = "http://qt.gtimg.cn/q=ff_%s"
 	URL_NETEASE_PK        = "http://qt.gtimg.cn/q=s_pk%s"
 	URL_NETEASE_INFO      = "http://qt.gtimg.cn/q=s_%s"
-	URL_NETEASE_DAILY     = "http://data.gtimg.cn/flashdata/hushen/daily/%v/%s.js"
+	URL_NETEASE_DAILY     = "http://quotes.money.163.com/service/chddata.html?code=%s&start=%s&end=%s&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"
 	URL_NETEASE_WEEKLY    = "http://data.gtimg.cn/flashdata/hushen/weekly/%s.js"
 )
 
@@ -156,29 +158,36 @@ func GetInfoNetease(code string) *StockInfo {
 	return data
 }
 
-func GetDailyNetease(code string, year int) []*HistoryData {
-	resp, err := http.DefaultClient.Get(fmt.Sprintf(URL_NETEASE_DAILY, year, code))
+func GetDailyNetease(code string) []*HistoryData {
+	now := time.Now()
+	year, month, day := now.Date()
+	yearstart := fmt.Sprintf("%04d%02d%02d", year-2, month, day)
+	yearend := fmt.Sprintf("%04d%02d%02d", year+1, month, day)
+	url := fmt.Sprintf(URL_NETEASE_DAILY, code, yearstart, yearend)
+	//fmt.Println(url)
+	resp, err := http.DefaultClient.Get(url)
 	checkErr(err)
 	if resp == nil || resp.StatusCode != http.StatusOK {
 		return nil
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
-	res := string(body)
-	dataArray := strings.Split(res, "\\n\\")
+	//res := string(body)
+	res := mahonia.NewDecoder("gbk").ConvertString(string(body))
+	dataArray := strings.Split(res, "\n")
 	list := []*HistoryData{}
 	for index, str := range dataArray {
 		if index == 0 || index == len(dataArray)-1 {
 
 		} else {
-			data := strings.Split(str, " ")
+			data := strings.Split(str, ",")
 			entity := new(HistoryData)
 			entity.Date = strings.Replace(data[0], "\n", "", -1)
-			entity.Open, _ = strconv.ParseFloat(data[1], 64)
-			entity.Close, _ = strconv.ParseFloat(data[2], 64)
-			entity.Max, _ = strconv.ParseFloat(data[3], 64)
-			entity.Min, _ = strconv.ParseFloat(data[4], 64)
-			entity.Trade, _ = strconv.ParseFloat(data[5], 64)
+			entity.Open, _ = strconv.ParseFloat(data[6], 64)
+			entity.Close, _ = strconv.ParseFloat(data[3], 64)
+			entity.Max, _ = strconv.ParseFloat(data[4], 64)
+			entity.Min, _ = strconv.ParseFloat(data[5], 64)
+			entity.Trade, _ = strconv.ParseFloat(data[12], 64)
 			list = append(list, entity)
 		}
 	}
@@ -225,8 +234,9 @@ func (quotes *Quotes) FetchNetease() (self *Quotes) {
 			}
 		}()
 
-		codes := util.StockWithPrefix(quotes.profile.Tickers)
+		codes := util.StockWithPrefixNetease(quotes.profile.Tickers)
 		url := fmt.Sprintf(URL_NETEASE_REAL_TIME, strings.Join(codes, ","))
+		//fmt.Println(url)
 		response, err := http.Get(url)
 		if err != nil {
 			panic(err)
@@ -238,14 +248,14 @@ func (quotes *Quotes) FetchNetease() (self *Quotes) {
 			panic(err)
 		}
 
-		quotes.parseNetease(body)
+		quotes.parseNetease(body, codes)
 	}
 
 	return quotes
 }
 
 // this will parse the json objects
-func (quotes *Quotes) parseNetease(body []byte) (*Quotes, error) {
+func (quotes *Quotes) parseNetease(body []byte, codes []string) (*Quotes, error) {
 	// response -> quoteResponse -> result|error (array) -> map[string]interface{}
 	// Stocks has non-int things
 	// d := map[string]map[string][]Stock{}
@@ -280,10 +290,19 @@ func (quotes *Quotes) parseNetease(body []byte) (*Quotes, error) {
 
 		}
 
+		newstring := ""
+		for _, char := range result["name"] {
+			if unicode.Is(unicode.Scripts["Han"], char) {
+				newstring = newstring + string(char) + " "
+			} else {
+				newstring = newstring + string(char)
+			}
+		}
+		quotes.stocks[i].Ticker = newstring
+
 		yestclose, _ := strconv.ParseFloat(result["yestclose"], 64)
 		now, _ := strconv.ParseFloat(result["price"], 64)
 
-		quotes.stocks[i].Ticker = result["name"]
 		quotes.stocks[i].LastTrade = result["price"]
 		quotes.stocks[i].Change = fmt.Sprintf("%.2f", now-yestclose)
 		quotes.stocks[i].ChangePct = fmt.Sprintf("%.2f", 100.0*(now-yestclose)/yestclose)
@@ -315,7 +334,40 @@ func (quotes *Quotes) parseNetease(body []byte) (*Quotes, error) {
 		if err == nil {
 			quotes.stocks[i].Advancing = adv >= 0.0
 		}
+
+		code := result["code"]
+		weekly := GetDailyNetease(code)
+		low52, high52 := func(list []*HistoryData) (min float64, max float64) {
+			listnbr := len(list)
+			startIndex := 0
+			if len(weekly) > 52*5 {
+				startIndex = listnbr - 52*5
+			} else if len(weekly) < 1 {
+				return 0, 0
+			} else {
+				startIndex = 0
+			}
+			min = list[startIndex].Min
+			max = list[startIndex].Max
+
+			for _, entity := range list[startIndex:] {
+				valueMin := entity.Min
+				valueMax := entity.Max
+				if valueMin < min {
+					min = valueMin
+				}
+				if valueMax > max {
+					max = valueMax
+				}
+			}
+			return min, max
+		}(weekly)
+
+		quotes.stocks[i].Low52 = strconv.FormatFloat(low52, 'f', -1, 64)
+		quotes.stocks[i].High52 = strconv.FormatFloat(high52, 'f', -1, 64)
+
 		i++
 	}
+
 	return quotes, nil
 }
