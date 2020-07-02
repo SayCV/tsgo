@@ -252,6 +252,13 @@ func (layout *Layout) prettify(quotes *Quotes) []Stock {
 		layout.sorter = NewSorter(profile)
 	}
 	layout.sorter.SortByCurrentColumn(pretty)
+
+	if layout.vendor == API_VENDOR_LIMITUP_EASTMONEY {
+		for i, _ := range pretty {
+			pretty[i].MarketCap = layout.pad(fmt.Sprintf("%d", i+1), layout.columns[14].width)
+		}
+	}
+
 	//
 	// Group stocks by advancing/declining unless sorted by Chanage or Change%
 	// in which case the grouping has been done already.
