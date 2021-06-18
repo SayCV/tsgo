@@ -12,6 +12,7 @@ import (
 func buildQQMarketTemplate() *template.Template {
 	markup := `<yellow>Dow</> {{.Dow.change}} ({{.Dow.percent}}) at {{.Dow.latest}} <yellow>NASDAQ</> {{.Nasdaq.change}} ({{.Nasdaq.percent}}) at {{.Nasdaq.latest}}
 <yellow>上 指</> {{.Szzs.change}} ({{.Szzs.percent}}%) at {{.Szzs.latest}} <yellow>深 成</> {{.Szcz.change}} ({{.Szcz.percent}}%) at {{.Szcz.latest}}
+<yellow>沪 深</> {{.Hs300.change}} ({{.Hs300.percent}}%) at {{.Hs300.latest}} <yellow>创 指</> {{.Cybz.change}} ({{.Cybz.percent}}%) at {{.Cybz.latest}}
 <yellow>Oil</> ${{.Oil.latest}} ({{.Oil.change}}%) <yellow>Gold</> ${{.Gold.latest}} ({{.Gold.change}}%)`
 
 	return template.Must(template.New(`market`).Parse(markup))

@@ -139,26 +139,32 @@ func (layout *Layout) Market(market *Market) string {
 	case API_VENDOR_QQ:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
+			market.Hs300, market.Cybz,
 			market.Oil, market.Gold)
 	case API_VENDOR_SINA:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
+			market.Hs300, market.Cybz,
 			market.Oil, market.Gold)
 	case API_VENDOR_NETEASE:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
+			market.Hs300, market.Cybz,
 			market.Oil, market.Gold)
 	case API_VENDOR_EASTMONEY:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
+			market.Hs300, market.Cybz,
 			market.Oil, market.Gold)
 	case API_VENDOR_LIMITUP_EASTMONEY:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
+			market.Hs300, market.Cybz,
 			market.Oil, market.Gold)
 	case API_VENDOR_LHB_EASTMONEY:
 		highlight(market.Dow, market.Nasdaq,
 			market.Szzs, market.Szcz,
+			market.Hs300, market.Cybz,
 			market.Oil, market.Gold)
 	default:
 		highlight(market.Dow, market.Sp500, market.Nasdaq,

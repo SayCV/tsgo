@@ -41,7 +41,7 @@ func NewProfile(vendor APISourceType) *Profile {
 		if vendor == API_VENDOR_YAHOO {
 			profile.Tickers = []string{`AAPL`, `C`, `GOOG`, `IBM`, `KO`, `ORCL`, `V`}
 		} else {
-			profile.Tickers = []string{"600519", "601318", "601066", "002958", "000878"}
+			profile.Tickers = []string{"603799", "600519", "601318", "600036", "600030"}
 		}
 		profile.SortColumn = 3    // Stock quotes are sorted by ticker name.
 		profile.Ascending = false // H to L.

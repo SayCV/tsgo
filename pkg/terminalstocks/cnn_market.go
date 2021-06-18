@@ -34,6 +34,8 @@ type Market struct {
 	Gold      map[string]string
 	Szzs      map[string]string
 	Szcz      map[string]string
+	Hs300     map[string]string
+	Cybz      map[string]string
 	regex     *regexp.Regexp // Regex to parse market data from HTML.
 	errors    string         // Error(s), if any.
 }
@@ -60,6 +62,9 @@ func NewMarket(vendor APISourceType) *Market {
 
 	market.Szzs = make(map[string]string)
 	market.Szcz = make(map[string]string)
+
+	market.Hs300 = make(map[string]string)
+	market.Cybz = make(map[string]string)
 
 	market.errors = ``
 
@@ -99,12 +104,16 @@ func (market *Market) Fetch() (self *Market) {
 		mkt2 := market.FetchQQ()
 		mkt1.Szzs = mkt2.Szzs
 		mkt1.Szcz = mkt2.Szcz
+		mkt1.Hs300 = mkt2.Hs300
+		mkt1.Cybz = mkt2.Cybz
 		return mkt1
 	case API_VENDOR_SINA:
 		mkt1 := market.FetchYahoo()
 		mkt2 := market.FetchQQ()
 		mkt1.Szzs = mkt2.Szzs
 		mkt1.Szcz = mkt2.Szcz
+		mkt1.Hs300 = mkt2.Hs300
+		mkt1.Cybz = mkt2.Cybz
 		return mkt1
 	case API_VENDOR_NETEASE:
 		mkt1 := market.FetchYahoo()
@@ -117,18 +126,24 @@ func (market *Market) Fetch() (self *Market) {
 		mkt2 := market.FetchQQ()
 		mkt1.Szzs = mkt2.Szzs
 		mkt1.Szcz = mkt2.Szcz
+		mkt1.Hs300 = mkt2.Hs300
+		mkt1.Cybz = mkt2.Cybz
 		return mkt1
 	case API_VENDOR_LIMITUP_EASTMONEY:
 		mkt1 := market.FetchYahoo()
 		mkt2 := market.FetchQQ()
 		mkt1.Szzs = mkt2.Szzs
 		mkt1.Szcz = mkt2.Szcz
+		mkt1.Hs300 = mkt2.Hs300
+		mkt1.Cybz = mkt2.Cybz
 		return mkt1
 	case API_VENDOR_LHB_EASTMONEY:
 		mkt1 := market.FetchYahoo()
 		mkt2 := market.FetchQQ()
 		mkt1.Szzs = mkt2.Szzs
 		mkt1.Szcz = mkt2.Szcz
+		mkt1.Hs300 = mkt2.Hs300
+		mkt1.Cybz = mkt2.Cybz
 		return mkt1
 	default:
 		return market.FetchYahoo()
